@@ -92,11 +92,10 @@ void BMV080Sensor::sensor_task(void* parameter) {
             bmv080_serve_interrupt(sensor->sensorHandle, bmv080_on_data_ready, sensor);
         }
         
-        // Optional: Stack-Monitoring
         UBaseType_t stack_free = uxTaskGetStackHighWaterMark(NULL);
         ESP_LOGD(TAG, "Stack frei: %u bytes", stack_free * 4);
         
-        vTaskDelay(pdMS_TO_TICKS(10000));  // 10 Sekunden
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }
 
@@ -126,13 +125,12 @@ void BMV080Sensor::setup() {
         ESP_LOGI(TAG, "Bosch SDK erfolgreich geladen");
         bmv080_start_continuous_measurement(this->sensorHandle);
         
-        // Task mit 60KB Stack wie Bosch
         BaseType_t task_created = xTaskCreate(
             sensor_task,           
             "bmv080_task",        
-            60 * 1024,            // 60KB Stack
+            60 * 1024,
             this,                 
-            configMAX_PRIORITIES - 1,  // Hohe Priorität
+            configMAX_PRIORITIES - 1,
             &sensor_task_handle_  
         );
         
@@ -148,14 +146,11 @@ void BMV080Sensor::setup() {
     }
 }
 
-void BMV080Sensor::update() {
-    // Leer - die separate Task macht alles
-}
 
 void BMV080Sensor::dump_config() {
     ESP_LOGCONFIG(TAG, "BMV080 Sensor:");
     LOG_I2C_DEVICE(this);
 }
 
-} // namespace bmv080
-} // namespace esphome
+}
+}
