@@ -1,12 +1,10 @@
 esphome:
   name: bmv080-external-component
-  platformio_options:
-    board_build.f_cpu: 240000000L
-    upload_speed: 115200
+
 external_components:
-    - source:
-        type: local
-        path: external
+  - source:
+      type: local
+      path: external
 
 esp32:
   board: esp32dev
@@ -18,10 +16,15 @@ sensor:
     address: 0x54
     update_interval: 10s
     name: "Mein Test Sensor"
-    
+
 logger:
+  level: DEBUG
+  logs:
+    component: DEBUG
+    i2c: DEBUG
 
 i2c:
   sda: GPIO21
   scl: GPIO22
   scan: true
+  frequency: 100kHz  # Langsamere I2C-Geschwindigkeit für Stabilität
