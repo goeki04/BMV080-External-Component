@@ -79,7 +79,8 @@ int8_t BMV080Sensor::bmv080_delay(uint32_t period_ms) {
 void bmv080_on_data_ready(bmv080_output_t output, void* callback_parameters) {
     auto *sensor = (BMV080Sensor *) callback_parameters;
     sensor->publish_state(output.pm2_5_mass_concentration);
-    ESP_LOGI(TAG, "PM2.5: %.2f µg/m³", output.pm2_5_mass_concentration);
+    ESP_LOGI(TAG, "Is Obstructed: %s", output.is_obstructed ? "YES" : "NO");
+    ESP_LOGI(TAG, "PM2.5: %.2f µg/m³ PM10: %.2f µg/m³", output.pm2_5_mass_concentration, output.pm10_mass_concentration);
 }
 
 void BMV080Sensor::sensor_task(void* parameter) {

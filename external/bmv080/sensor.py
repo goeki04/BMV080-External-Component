@@ -27,12 +27,8 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
-
-    # Pfad zu den .a Bibliotheken ermitteln
     current_dir = os.path.dirname(os.path.realpath(__file__))
     safe_path = current_dir.replace('\\', '/')
-
-    # Linker-Flags für Bosch SDK (lib_bmv080.a und lib_postProcessor.a)
     cg.add_platformio_option("build_flags", [
         f"-L{safe_path}", 
         "-l_bmv080", 

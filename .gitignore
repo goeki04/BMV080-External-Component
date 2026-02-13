@@ -4,3 +4,4 @@
 /.esphome/
 /secrets.yaml
 /external/bmv080/__pycache__
+/.vscode

@@ -16,7 +16,7 @@ namespace bmv080 {
 class BMV080Sensor : public sensor::Sensor, public PollingComponent, public i2c::I2CDevice {
  public:
   void setup() override;
-  void update() override;
+  void update() override{};
   void dump_config() override;
 
   static int8_t bmv080_i2c_read(bmv080_sercom_handle_t sercomHandle, uint16_t header, uint16_t* payload, uint16_t len);
@@ -30,5 +30,5 @@ class BMV080Sensor : public sensor::Sensor, public PollingComponent, public i2c:
   static void sensor_task(void* parameter);
 };
 
-} // namespace bmv080
-} // namespace esphome
+}
+} 
