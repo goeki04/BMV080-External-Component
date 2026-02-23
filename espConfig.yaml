@@ -1,6 +1,8 @@
 esphome:
   name: bmv080-external-component
 
+api:
+
 external_components:
   - source:
       type: local
@@ -16,6 +18,10 @@ sensor:
     address: 0x54
     update_interval: 10s
     name: "Mein Test Sensor"
+
+wifi:
+  ssid: "Duman"
+  password: "Derince.41"
 
 logger:
   level: DEBUG
