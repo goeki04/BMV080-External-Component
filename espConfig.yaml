@@ -1,8 +1,12 @@
 esphome:
   name: bmv080-external-component
-
 api:
-
+  port: 6053
+  batch_delay: 50ms
+  listen_backlog: 2
+  max_connections: 4
+  max_send_queue: 10
+  reboot_timeout: 3min
 external_components:
   - source:
       type: local
@@ -17,7 +21,11 @@ sensor:
   - platform: bmv080
     address: 0x54
     update_interval: 10s
-    name: "Mein Test Sensor"
+    name: "BMV080"
+    unit_of_measurement: "µg/m³"
+    device_class: pm25
+    state_class: measurement
+    accuracy_decimals: 2
 
 wifi:
   ssid: "Duman"

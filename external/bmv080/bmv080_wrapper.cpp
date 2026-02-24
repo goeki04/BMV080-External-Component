@@ -42,6 +42,12 @@ int8_t BMV080Sensor::bmv080_i2c_read(bmv080_sercom_handle_t sercomHandle, uint16
     return 0;
 }
 
+void BMV080Sensor::publish_state_safely(float value) {
+    this->defer([this, value]() {
+        this->publish_state(value);
+    });
+}
+
 int8_t BMV080Sensor::bmv080_i2c_write(bmv080_sercom_handle_t sercomHandle, uint16_t header, const uint16_t* payload, uint16_t len) {
     auto* device = reinterpret_cast<BMV080Sensor*>(sercomHandle);
     uint8_t address = device->address_;
@@ -75,12 +81,20 @@ int8_t BMV080Sensor::bmv080_delay(uint32_t period_ms) {
     vTaskDelay(pdMS_TO_TICKS(period_ms)); 
     return 0;
 }
-
+/*
 void bmv080_on_data_ready(bmv080_output_t output, void* callback_parameters) {
     auto *sensor = (BMV080Sensor *) callback_parameters;
     sensor->publish_state(output.pm2_5_mass_concentration);
     ESP_LOGI(TAG, "Is Obstructed: %s", output.is_obstructed ? "YES" : "NO");
     ESP_LOGI(TAG, "PM2.5: %.2f µg/m³ PM10: %.2f µg/m³", output.pm2_5_mass_concentration, output.pm10_mass_concentration);
+}*/
+
+void bmv080_on_data_ready(bmv080_output_t output, void* callback_parameters) {
+    auto *sensor = (BMV080Sensor *) callback_parameters;
+    
+    ESP_LOGI(TAG, "PM2.5: %.2f µg/m³ PM10: %.2f µg/m³", output.pm2_5_mass_concentration, output.pm10_mass_concentration);
+    
+    sensor->publish_state_safely(output.pm2_5_mass_concentration);
 }
 
 void BMV080Sensor::sensor_task(void* parameter) {

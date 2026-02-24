@@ -18,7 +18,7 @@ class BMV080Sensor : public sensor::Sensor, public PollingComponent, public i2c:
   void setup() override;
   void update() override{};
   void dump_config() override;
-
+  void publish_state_safely(float value);
   static int8_t bmv080_i2c_read(bmv080_sercom_handle_t sercomHandle, uint16_t header, uint16_t* payload, uint16_t len);
   static int8_t bmv080_i2c_write(bmv080_sercom_handle_t sercomHandle, uint16_t header, const uint16_t* payload, uint16_t len);
   static int8_t bmv080_delay(uint32_t period_ms);
